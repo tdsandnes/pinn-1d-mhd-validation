@@ -1,0 +1,20 @@
+base_model_name: methods
+
+simulations: 2freq_1Ma_500Re_500Rm/sim_config_2freq_1Ma_500Re_500Rm.py
+
+sampling_configs:
+  - t20to30_eachcol032768sobol_data000033_bc016384
+  - t20to30_eachcol032768sobol_data000065_bc016384
+  - t20to30_eachcol032768sobol_data000129_bc016384
+  - t20to30_eachcol032768sobol_data000257_bc016384
+  - t20to30_eachcol032768sobol_data000513_bc016384
+  - t20to30_eachcol032768sobol_data001025_bc016384
+
+# Each entry is the methods switched on for one case. Anything left out is off.
+methods:
+  - [rba, w23, siren, soap]  # all methods
+  - [w23, siren, soap]       # no rba
+  - [rba, siren, soap]       # no w23
+  - [rba, w23, soap]         # no siren
+  - [rba, w23, siren]        # adam
+  - []                       # basic

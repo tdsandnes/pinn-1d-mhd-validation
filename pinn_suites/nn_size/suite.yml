@@ -1,0 +1,25 @@
+base_model_name: nn_size
+
+simulations: 3freq_1Ma_500Re_500Rm/sim_config_3freq_1Ma_500Re_500Rm.py
+
+repeats: 3
+
+layers:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+
+neurons:
+  - 20
+  - 40
+  - 60
+  - 80
+  - 100
+  - 120
+  - 140
+  - 160

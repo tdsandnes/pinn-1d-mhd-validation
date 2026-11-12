@@ -1,0 +1,9 @@
+base_model_name: no_dbdx_bc
+template: no_dbdx_bc
+
+simulations:
+  - 1freq_1Ma_500Re_500Rm/sim_config_1freq_1Ma_500Re_500Rm.py
+  - 2freq_1Ma_500Re_500Rm/sim_config_2freq_1Ma_500Re_500Rm.py
+  - 3freq_1Ma_500Re_500Rm/sim_config_3freq_1Ma_500Re_500Rm.py
+
+log_point_weight_info: true

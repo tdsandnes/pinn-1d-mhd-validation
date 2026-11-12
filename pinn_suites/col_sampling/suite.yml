@@ -1,0 +1,14 @@
+base_model_name: col_sampling
+
+simulations:
+  - 1freq_1Ma_500Re_500Rm/sim_config_1freq_1Ma_500Re_500Rm.py
+  - 2freq_1Ma_500Re_500Rm/sim_config_2freq_1Ma_500Re_500Rm.py
+  - 3freq_1Ma_500Re_500Rm/sim_config_3freq_1Ma_500Re_500Rm.py
+
+sampling_configs:
+  - t20to30_eachcol001024sobol_data001025_bc016384
+  - t20to30_eachcol002048sobol_data001025_bc016384
+  - t20to30_eachcol004096sobol_data001025_bc016384
+  - t20to30_eachcol008192sobol_data001025_bc016384
+  - t20to30_eachcol016384sobol_data001025_bc016384
+  - t20to30_eachcol032768sobol_data001025_bc016384

@@ -1,0 +1,134 @@
+model_name: ${MODEL_NAME}
+random_seed: ${SEED}
+
+DataSets:
+  - label:      data_loss
+    source:     file
+    file_path:  ${DATA_FILE}
+  - label:      phys_zp_loss
+    source:     file
+    file_path:  ${DATA_FILE}
+  - label:      phys_zm_loss
+    source:     file
+    file_path:  ${DATA_FILE}
+
+CoordSystems:
+  - label: cartesian_xt
+    coord_system: cartesian
+    geometric_axis_labels:
+      - x
+    non_geometric_axis_labels:
+      - t
+
+Coordinates:
+  - label: data_coords
+    coord_system_label: cartesian_xt
+    domain:
+      bounds:
+        t:
+          min: ${T_MIN}
+          max: ${T_MAX}
+        x:
+          min: 1.0
+          max: 1.0
+  - label: full_coords
+    coord_system_label: cartesian_xt
+    domain:
+      bounds:
+        t:
+          min: ${T_MIN}
+          max: ${T_MAX}
+        x:
+          min: 0.0
+          max: 1.0
+
+Fields:
+  input_fields:
+    - label: b
+      rank: 0
+  output_fields:
+    - label: b
+      rank: 0
+    - label: nn_out
+      rank: 0
+  derivable_fields:
+    - label: u
+      rank: 0
+    - label: zp_eqn_residual
+      rank: 0
+    - label: zm_eqn_residual
+      rank: 0
+
+Constants:
+  - label: Re
+    value: ${RE}${RE_LEARNABLE}
+  - label: Rm
+    value: ${RM}${RM_LEARNABLE}
+  - label: Ma
+    value: ${MA}${MA_LEARNABLE}
+
+Equations:
+  - label: u_eqn
+    function_name: u_eqn
+    file_path: ${EQN_FILE}
+    input_labels: [nn_out, x]
+    output_labels: [u]
+    output_ranks: [0]
+  - label: zp_eqn
+    function_name: zp_eqn
+    file_path: ${EQN_FILE}
+    input_labels: [b, u, Re, Rm, Ma]
+    output_labels: [zp_eqn_residual]
+    output_ranks: [0]
+  - label: zm_eqn
+    function_name: zm_eqn
+    file_path: ${EQN_FILE}
+    input_labels: [b, u, Re, Rm, Ma]
+    output_labels: [zm_eqn_residual]
+    output_ranks: [0]
+
+LossTerms:
+  - label:                data_b
+    field_label:          b
+    dataset_label:        data_loss
+    coordinates_label:    data_coords
+    loss_type:            data
+    loss_function:        ${LOSS_FUNCTION}
+    adaptive_point_weights: ${ADAPTIVE_POINT_WEIGHTS}
+    weight_method_label:  ${WEIGHT_METHOD}
+    weight_value:         1.0
+    weight_group_label:   data_b
+  - label:                zp_eqn
+    field_label:          zp_eqn_residual
+    dataset_label:        phys_zp_loss
+    coordinates_label:    full_coords
+    loss_type:            physics
+    loss_function:        ${LOSS_FUNCTION}
+    adaptive_point_weights: ${ADAPTIVE_POINT_WEIGHTS}
+    weight_method_label:  ${WEIGHT_METHOD}
+    weight_value:         1.0
+    weight_group_label:   zp_eqn
+  - label:                zm_eqn
+    field_label:          zm_eqn_residual
+    dataset_label:        phys_zm_loss
+    coordinates_label:    full_coords
+    loss_type:            physics
+    loss_function:        ${LOSS_FUNCTION}
+    adaptive_point_weights: ${ADAPTIVE_POINT_WEIGHTS}
+    weight_method_label:  ${WEIGHT_METHOD}
+    weight_value:         1.0
+    weight_group_label:   zm_eqn
+
+NN: ${NN_ARCHITECTURE}
+
+Trainer:
+  Optimizer: ${OPTIMIZER}
+  warmup_epochs: ${WARMUP_EPOCHS}
+  print_freq: 100
+  n_batches: ${N_BATCHES}
+  log_point_weight_info: ${LOG_POINT_WEIGHT_INFO}
+  point_weight_snapshot_freq: ${POINT_WEIGHT_SNAPSHOT_FREQ}
+  checkpoint_path: ${RESTART_FILE}
+  checkpoint_freq: ${CHECKPOINT_FREQ}
+  stop_on_sigterm: true
+  TrainerModules: ${TRAINER_MODULES}
