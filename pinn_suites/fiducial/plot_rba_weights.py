@@ -80,6 +80,7 @@ def plot_rba_figure(weights: WeightHistory, out_path: Path) -> None:
             color=color,
             alpha=BAND_ALPHA,
             linewidth=0,
+            rasterized=True,
         )
         ax.plot(epochs, weights[term]["median"], color=color)
         ax.text(
